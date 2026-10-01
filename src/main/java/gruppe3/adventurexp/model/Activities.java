@@ -70,6 +70,15 @@ public class Activities {
         this.maxParticipants = maxParticipants;
     }
 
+    public record ActivitiesRequest(
+            String name,
+            int price,
+            int ageLimit,
+            int minParticipants,
+            int maxParticipants
+    ) {
+    }
+
 
 
 }
