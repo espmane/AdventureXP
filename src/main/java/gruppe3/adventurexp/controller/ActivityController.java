@@ -1,81 +1,79 @@
 package gruppe3.adventurexp.controller;
 
-
 import gruppe3.adventurexp.model.Activities;
-import gruppe3.adventurexp.repository.ActivityRepository;
-import org.springframework.http.HttpStatus;
+import gruppe3.adventurexp.model.dto.ActivityRequest;
+import gruppe3.adventurexp.model.dto.ActivityResponse;
+import gruppe3.adventurexp.service.ActivityService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/activities")
 public class ActivityController {
 
-    private final ActivityRepository activityRepository;
+    private final ActivityService activityService;
 
-    public ActivityController(ActivityRepository activityRepository) {
-        this.activityRepository = activityRepository;
+    public ActivityController(final ActivityService activityService) {
+        this.activityService = activityService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ActivityResponse>> getAllActivities() {
+        final var response = toResponse(activityService.getAll());
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable int id) {
-        Optional<Activities> result = activityRepository.findById(id);
+    public ResponseEntity<ActivityResponse> getActivityById(
+            @PathVariable final int id) {
 
-        if (result.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        final var response =
+                ActivityResponse.from(activityService.getById(id));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<ActivityResponse> saveActivity(
+            @RequestBody final ActivityRequest request) {
+
+        final var response =
+                ActivityResponse.from(activityService.save(request));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<ActivityResponse> updateActivity(
+            @RequestBody final ActivityRequest request) {
+
+        final var response =
+                ActivityResponse.from(activityService.update(request));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteActivity(
+            @PathVariable final int id) {
+
+        activityService.remove(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    private List<ActivityResponse> toResponse(
+            final List<Activities> activities) {
+
+        final List<ActivityResponse> responses = new ArrayList<>();
+
+        for (final Activities activity : activities) {
+            responses.add(ActivityResponse.from(activity));
         }
-        return ResponseEntity.ok(result.get());
-    }
 
-    @PostMapping("/create")
-    public ResponseEntity<Activities> create(@RequestBody Activities.ActivitiesRequest request) {
-        Activities newActivity = new Activities(
-                request.name(),
-                request.price(),
-                request.ageLimit(),
-                request.minParticipants(),
-                request.maxParticipants());
-
-        Activities savedActivity = activityRepository.save(newActivity);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(savedActivity);
-    }
-
-    @PostMapping("/{id}/edit")
-    public ResponseEntity<Activities> edit(@PathVariable int id, @RequestBody Activities.ActivitiesRequest request) {
-
-        return activityRepository.findById(id)
-                .map(existingActivity -> {
-                    existingActivity.setName(request.name());
-                    existingActivity.setPrice(request.price());
-                    existingActivity.setAgeLimit(request.ageLimit());
-                    existingActivity.setMinParticipants(request.minParticipants());
-                    existingActivity.setMaxParticipants(request.maxParticipants());
-
-                    Activities updatedActivity = activityRepository.save(existingActivity);
-                    return ResponseEntity.ok(updatedActivity);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/{id}/delete")
-    public ResponseEntity<?> delete(@PathVariable int id) {
-        return activityRepository.findById(id)
-                .map(existingActivity -> {
-                    activityRepository.delete(existingActivity);
-                    return ResponseEntity.noContent().build();
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return responses;
     }
 }
