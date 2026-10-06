@@ -1,6 +1,6 @@
 package gruppe3.adventurexp.service;
 
-import gruppe3.adventurexp.model.Activities;
+import gruppe3.adventurexp.model.Activity;
 import gruppe3.adventurexp.model.Reservation;
 import gruppe3.adventurexp.repository.ActivityRepository;
 import gruppe3.adventurexp.repository.ReservationRepository;
@@ -29,13 +29,14 @@ public class ReservationService {
     public List<Reservation> reserveAllActivities(Reservation request) {
         List<Reservation> reservations = new ArrayList<>();
 
-        for (Activities activity : activiRepository.findAll()) {
+        for (Activity activity : activiRepository.findAll()) {
             Reservation r = new Reservation(
+                    request.getId(),
+                    request.getActivity(),
                     request.getName(),
                     request.getPhoneNumber(),
                     request.getAmountPeople(),
-                    request.getStartTime(),
-                    request.getEndTime(),
+                    request.getTimeInterval(),
                     activity.getPrice()
             );
             r.setActivity(activity);
