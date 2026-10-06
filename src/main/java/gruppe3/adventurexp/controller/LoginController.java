@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
@@ -20,22 +18,22 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password, HttpSession session) {
-        if (username.equals("admin") && password.equals("1234")) {
+        if (isValidLogin(username, password)) {
             session.setAttribute("loggedIn", true);
             return ResponseEntity.ok("Logged in");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
     }
 
-    @GetMapping()
+    @GetMapping("/me")
     public ResponseEntity<?> me(HttpSession session) {
-        Object user = session.getAttribute("user");
-        if (user == null) {
+        Object loggedIn = session.getAttribute("loggedIn");
+        if (loggedIn == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Not logged in");
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok("Logged in");
     }
 
     @PostMapping("/logout")
