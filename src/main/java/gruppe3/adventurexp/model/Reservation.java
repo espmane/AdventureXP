@@ -17,6 +17,9 @@ public class Reservation {
     private int endTime;
     private int price;
 
+    @ManyToOne
+    @JoinColumn(name = "activity_id")
+    private Activities activity;
 
     public Reservation(){}
 
@@ -27,6 +30,14 @@ public class Reservation {
         this.startTime = startTime;
         this.endTime = endTime;
         this.price = price;
+    }
+
+    public Activities getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activities activity) {
+        this.activity = activity;
     }
 
     public int getId() {
