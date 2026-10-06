@@ -1,6 +1,15 @@
 package gruppe3.adventurexp.service;
 
+import gruppe3.adventurexp.model.Activity;
+import gruppe3.adventurexp.model.Reservation;
+import gruppe3.adventurexp.model.TimeInterval;
+import gruppe3.adventurexp.model.dto.ReservationRequest;
+import gruppe3.adventurexp.repository.ActivityRepository;
+import gruppe3.adventurexp.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReservationService {
@@ -36,15 +45,13 @@ public class ReservationService {
         final int price =
                 activity.getPrice() * request.amountPeople();
 
-        final Reservation reservation = new Reservation(
-                null,
-                activity,
-                request.name(),
-                request.phoneNumber(),
-                request.amountPeople(),
-                timeInterval,
-                price
-        );
+        final Reservation reservation = new Reservation();
+        reservation.setActivity(activity);
+        reservation.setName(request.name());
+        reservation.setPhoneNumber(request.phoneNumber());
+        reservation.setAmountPeople(request.amountPeople());
+        reservation.setTimeInterval(timeInterval);
+        reservation.setPrice(price);
 
         return reservationRepository.save(reservation);
     }
@@ -80,21 +87,20 @@ public class ReservationService {
     public List<Reservation> reserveAllActivities(Reservation request) {
         List<Reservation> reservations = new ArrayList<>();
 
-        for (Activity activity : activiRepository.findAll()) {
-            Reservation r = new Reservation(
-                    request.getId(),
-                    request.getActivity(),
-                    request.getName(),
-                    request.getPhoneNumber(),
-                    request.getAmountPeople(),
-                    request.getTimeInterval(),
-                    activity.getPrice()
-            );
+        for (Activity activity : activityRepository.findAll()) {
+            Reservation r = new Reservation();
+
             r.setActivity(activity);
+            r.setName(request.getName());
+            r.setPhoneNumber(request.getPhoneNumber());
+            r.setAmountPeople(request.getAmountPeople());
+            r.setTimeInterval(request.getTimeInterval());
+            r.setPrice(request.getPrice());
+
             reservations.add(r);
         }
 
-        return repository.saveAll(reservations);
+        return reservationRepository.saveAll(reservations);
     }
 
     public void remove(final Long id) {

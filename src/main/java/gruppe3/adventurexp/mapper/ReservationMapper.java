@@ -17,9 +17,7 @@ public class ReservationMapper {
     }
 
     public Reservation toEntity(final ReservationRequest request) {
-//        final Activity activity = activityService.findById(request.activityId());
-        //TODO: when activityService is done, clean this up
-        final Activity activity = new Activity();
+        final Activity activity = activityService.getById(request.activityId());
 
         return new Reservation(
                 null,
@@ -27,8 +25,7 @@ public class ReservationMapper {
                 request.name(),
                 request.phoneNumber(),
                 request.amountPeople(),
-                new TimeInterval(request.start(), request.end()),
-                activity.getPrice()
+                new TimeInterval(request.start(), request.end())
         );
     }
 }

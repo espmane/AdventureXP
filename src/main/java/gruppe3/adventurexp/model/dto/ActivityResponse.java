@@ -11,8 +11,7 @@ public record ActivityResponse(
         int maxParticipants
 ) {
 
-    public static ActivityResponse from(final Activity activity) {
-
+    public static ActivityResponse from(Activity activity) {
         return new ActivityResponse(
                 activity.getId(),
                 activity.getName(),

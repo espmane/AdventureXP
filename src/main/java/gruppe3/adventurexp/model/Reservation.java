@@ -23,14 +23,14 @@ public class Reservation {
     private TimeInterval timeInterval;
     private int price;
 
-    public Reservation(final Long id, final Activity activity, final String name, final String phoneNumber, final int amountPeople, final TimeInterval timeInterval, final int price) {
+    public Reservation(final Long id, final Activity activity, final String name, final String phoneNumber, final int amountPeople, final TimeInterval timeInterval) {
         this.id = id;
         this.activity = activity;
         this.name = name;
         this.phoneNumber = requireValidPhoneNumber(phoneNumber);
         this.amountPeople = amountPeople;
         this.timeInterval = timeInterval;
-        this.price = price;
+        this.price = calculatePrice(activity.getPrice());
     }
 
     public Reservation() {}
@@ -107,6 +107,10 @@ public class Reservation {
 
     public void setPrice(final int price) {
         this.price = price;
+    }
+
+    public int calculatePrice(int price) {
+        return (price * this.timeInterval.getDurationInHours()) * this.amountPeople;
     }
 
     @Override

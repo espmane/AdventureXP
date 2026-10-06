@@ -4,6 +4,7 @@ import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /** TimeInterval represents a period of time with a start time and an end time.*/
@@ -26,4 +27,7 @@ public record TimeInterval(LocalDateTime start, LocalDateTime end) {
         return start.isBefore(interval.end) && end.isAfter(interval.start);
     }
 
+    public int getDurationInHours() {
+        return (int) Duration.between(start, end).toHours();
+    }
 }
