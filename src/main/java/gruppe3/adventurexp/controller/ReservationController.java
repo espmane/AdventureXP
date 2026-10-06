@@ -22,16 +22,13 @@ public class ReservationController {
 
     @GetMapping
     public ResponseEntity<List<ReservationResponse>> getAllReservations() {
-
-        final var response =
-                toResponse(reservationService.getAll());
-
+        final var response = toResponse(reservationService.getAll());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ReservationResponse> getReservationById(
-            @PathVariable final int id) {
+            @PathVariable final Long id) {
 
         final var response =
                 ReservationResponse.from(reservationService.getById(id));
@@ -49,19 +46,22 @@ public class ReservationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/{id}/update")
     public ResponseEntity<ReservationResponse> updateReservation(
+            @PathVariable final Long id,
             @RequestBody final ReservationRequest request) {
 
         final var response =
-                ReservationResponse.from(reservationService.update(request));
+                ReservationResponse.from(
+                        reservationService.update(id, request)
+                );
 
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteReservation(
-            @PathVariable final int id) {
+            @PathVariable final Long id) {
 
         reservationService.remove(id);
 

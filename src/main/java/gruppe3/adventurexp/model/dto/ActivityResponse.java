@@ -1,9 +1,9 @@
 package gruppe3.adventurexp.model.dto;
 
-import gruppe3.adventurexp.model.Activities;
+import gruppe3.adventurexp.model.Activity;
 
 public record ActivityResponse(
-        int id,
+        Long id,
         String name,
         int price,
         int ageLimit,
@@ -11,7 +11,8 @@ public record ActivityResponse(
         int maxParticipants
 ) {
 
-    public static ActivityResponse from(Activities activity) {
+    public static ActivityResponse from(final Activity activity) {
+
         return new ActivityResponse(
                 activity.getId(),
                 activity.getName(),

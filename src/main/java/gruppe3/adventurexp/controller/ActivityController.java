@@ -1,6 +1,6 @@
 package gruppe3.adventurexp.controller;
 
-import gruppe3.adventurexp.model.Activities;
+import gruppe3.adventurexp.model.Activity;
 import gruppe3.adventurexp.model.dto.ActivityRequest;
 import gruppe3.adventurexp.model.dto.ActivityResponse;
 import gruppe3.adventurexp.service.ActivityService;
@@ -28,7 +28,7 @@ public class ActivityController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivityResponse> getActivityById(
-            @PathVariable final int id) {
+            @PathVariable final Long id) {
 
         final var response =
                 ActivityResponse.from(activityService.getById(id));
@@ -46,19 +46,22 @@ public class ActivityController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/{id}/update")
     public ResponseEntity<ActivityResponse> updateActivity(
+            @PathVariable final Long id,
             @RequestBody final ActivityRequest request) {
 
         final var response =
-                ActivityResponse.from(activityService.update(request));
+                ActivityResponse.from(
+                        activityService.update(id, request)
+                );
 
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteActivity(
-            @PathVariable final int id) {
+            @PathVariable final Long id) {
 
         activityService.remove(id);
 
@@ -66,11 +69,11 @@ public class ActivityController {
     }
 
     private List<ActivityResponse> toResponse(
-            final List<Activities> activities) {
+            final List<Activity> activities) {
 
         final List<ActivityResponse> responses = new ArrayList<>();
 
-        for (final Activities activity : activities) {
+        for (final Activity activity : activities) {
             responses.add(ActivityResponse.from(activity));
         }
 

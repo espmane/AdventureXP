@@ -1,6 +1,6 @@
 package gruppe3.adventurexp.service;
 
-import gruppe3.adventurexp.model.Activities;
+import gruppe3.adventurexp.model.Activity;
 import gruppe3.adventurexp.model.dto.ActivityRequest;
 import gruppe3.adventurexp.repository.ActivityRepository;
 import org.springframework.stereotype.Service;
@@ -16,18 +16,19 @@ public class ActivityService {
         this.activityRepository = activityRepository;
     }
 
-    public List<Activities> getAll() {
+    public List<Activity> getAll() {
         return activityRepository.findAll();
     }
 
-    public Activities getById(final int id) {
+    public Activity getById(final Long id) {
         return activityRepository.findById(id)
                 .orElseThrow();
     }
 
-    public Activities save(final ActivityRequest request) {
+    public Activity save(final ActivityRequest request) {
 
-        final Activities activity = new Activities(
+        final Activity activity = new Activity(
+                null,
                 request.name(),
                 request.price(),
                 request.ageLimit(),
@@ -38,10 +39,12 @@ public class ActivityService {
         return activityRepository.save(activity);
     }
 
-    public Activities update(final ActivityRequest request) {
+    public Activity update(
+            final Long id,
+            final ActivityRequest request) {
 
-        final Activities activity = activityRepository
-                .findById(request.id())
+        final Activity activity = activityRepository
+                .findById(id)
                 .orElseThrow();
 
         activity.setName(request.name());
@@ -53,9 +56,9 @@ public class ActivityService {
         return activityRepository.save(activity);
     }
 
-    public void remove(final int id) {
+    public void remove(final Long id) {
 
-        final Activities activity = activityRepository
+        final Activity activity = activityRepository
                 .findById(id)
                 .orElseThrow();
 
