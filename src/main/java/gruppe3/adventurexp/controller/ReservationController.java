@@ -59,6 +59,11 @@ public class ReservationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/company")
+    public List<Reservation> reserveAllActivities(@RequestBody Reservation request) {
+        return reservationService.reserveAllActivities(request);
+    }
+
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteReservation(
             @PathVariable final Long id) {
