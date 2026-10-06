@@ -29,7 +29,7 @@
 
     isLoggedIn().then(loggedIn => {
         if (loggedIn) {
-            window.location.href = "/";
+            window.location.href = "/auth/me";
         }
     });
 
@@ -42,7 +42,7 @@
 
         try {
             await login(username, password);
-            window.location.href = "/";
+            window.location.href = "/auth/me";
         } catch (error) {
             errorText.textContent = error.message;
         }

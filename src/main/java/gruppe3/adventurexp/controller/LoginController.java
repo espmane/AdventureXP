@@ -16,6 +16,11 @@ public class LoginController {
     private static final String SHARED_USERNAME = "admin";
     private static final String SHARED_PASSWORD = "1234";
 
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/login";
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password, HttpSession session) {
         if (isValidLogin(username, password)) {
