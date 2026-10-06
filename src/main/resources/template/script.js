@@ -1,27 +1,23 @@
 const reservations = [
     {
-        id: 1,
         activity: "Gocart",
         date: "2026-10-04",
         time: "10:00",
         participants: 8
     },
     {
-        id: 2,
         activity: "Paintball",
         date: "2026-10-04",
         time: "13:00",
         participants: 12
     },
     {
-        id: 3,
         activity: "Minigolf",
         date: "2026-10-06",
         time: "15:00",
         participants: 4
     },
     {
-        id: 4,
         activity: "Sumo Wrestling",
         date: "2026-10-15",
         time: "12:00",
@@ -29,7 +25,7 @@ const reservations = [
     }
 ];
 
-const reservationContainer = document.querySelector("#reservations");
+const reservationsElement = document.querySelector("#reservations");
 const periodTitle = document.querySelector("#periodTitle");
 
 const dayBtn = document.querySelector("#dayBtn");
@@ -39,92 +35,77 @@ const monthBtn = document.querySelector("#monthBtn");
 const currentDate = new Date("2026-10-04");
 
 
-function displayReservations(reservationsToShow) {
+function displayReservations(list) {
 
-    reservationContainer.innerHTML = "";
+    reservationsElement.replaceChildren();
 
-    if (reservationsToShow.length === 0) {
-        reservationContainer.innerHTML = "<p>Ingen reservationer.</p>";
-        return;
-    }
-
-    reservationsToShow.forEach(reservation => {
+    list.forEach(reservation => {
 
         const div = document.createElement("div");
 
-        div.innerHTML = `
-            <h3>${reservation.activity}</h3>
-            <p>Dato: ${reservation.date}</p>
-            <p>Tid: ${reservation.time}</p>
-            <p>Antal deltagere: ${reservation.participants}</p>
-            <hr>
-        `;
+        const activity = document.createElement("h3");
+        activity.textContent = reservation.activity;
 
-        reservationContainer.appendChild(div);
+        const info = document.createElement("p");
+        info.textContent =
+            reservation.date + " - " +
+            reservation.time + " - " +
+            reservation.participants + " deltagere";
+
+        div.appendChild(activity);
+        div.appendChild(info);
+
+        reservationsElement.appendChild(div);
     });
 }
+
 
 function showDay() {
 
     periodTitle.textContent = "Dagsoversigt";
 
-    const dateString = currentDate.toISOString().split("T")[0];
+    const date = currentDate.toISOString().split("T")[0];
 
-    const dayReservations = reservations.filter(reservation => {
-        return reservation.date === dateString;
-    });
+    const result = reservations.filter(reservation =>
+        reservation.date === date
+    );
 
-    displayReservations(dayReservations);
+    displayReservations(result);
 }
+
 
 function showWeek() {
 
     periodTitle.textContent = "Ugeoversigt";
 
-    const startDate = new Date(currentDate);
-
     const endDate = new Date(currentDate);
     endDate.setDate(endDate.getDate() + 7);
 
-    const weekReservations = reservations.filter(reservation => {
+    const result = reservations.filter(reservation => {
+        const date = new Date(reservation.date);
 
-        const reservationDate = new Date(reservation.date);
-
-        return reservationDate >= startDate &&
-            reservationDate < endDate;
+        return date >= currentDate && date < endDate;
     });
 
-    displayReservations(weekReservations);
+    displayReservations(result);
 }
+
 
 function showMonth() {
 
     periodTitle.textContent = "Månedsoversigt";
 
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
+    const result = reservations.filter(reservation => {
 
-    const monthReservations = reservations.filter(reservation => {
+        const date = new Date(reservation.date);
 
-        const reservationDate = new Date(reservation.date);
-
-        return reservationDate.getMonth() === month &&
-            reservationDate.getFullYear() === year;
+        return date.getMonth() === currentDate.getMonth()
+            && date.getFullYear() === currentDate.getFullYear();
     });
 
-    displayReservations(monthReservations);
+    displayReservations(result);
 }
 
-async function fetchReservations() {
-
-    const response = await fetch("http://localhost:8080/api/reservations");
-
-    if (!response.ok) {
-        throw new Error("Kunne ikke hente reservationer");
-    }
-
-    return await response.json();
-}
 
 dayBtn.addEventListener("click", showDay);
 weekBtn.addEventListener("click", showWeek);
