@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdventureXP - Medarbejder login</title>
+</head>
+
+<body>
+
+<h1>Medarbejder login</h1>
+
+<form id="loginForm">
+    <div>
+        <label for="username">Brugernavn</label><br>
+        <input type="text" id="username" required autofocus>
+    </div>
+
+    <div>
+        <label for="password">Adgangskode</label><br>
+        <input type="password" id="password" required>
+    </div>
+
+    <button type="submit">Log ind</button>
+</form>
+
+<p id="error" style="color: red;"></p>
+
+<script src="auth.js"></script>
+<script>
+    const form = document.querySelector("#loginForm");
+    const errorText = document.querySelector("#error");
+
+    // Er man allerede logget ind, spring login over
+    isLoggedIn().then(loggedIn => {
+        if (loggedIn) {
+            window.location.href = "index.html";
+        }
+    });
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        errorText.textContent = "";
+
+        const username = document.querySelector("#username").value;
+        const password = document.querySelector("#password").value;
+
+        try {
+            await login(username, password);
+            window.location.href = "index.html"; // reservationssiden
+        } catch (error) {
+            errorText.textContent = error.message;
+        }
+    });
+</script>
+
+</body>
+</html>
