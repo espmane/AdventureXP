@@ -1,6 +1,8 @@
 package gruppe3.adventurexp.service;
 
+import gruppe3.adventurexp.mapper.AssignmentMapper;
 import gruppe3.adventurexp.mapper.ReservationMapper;
+import gruppe3.adventurexp.model.Assignment;
 import gruppe3.adventurexp.model.Reservation;
 import gruppe3.adventurexp.model.Schedule;
 import gruppe3.adventurexp.model.dto.ScheduleRequest;
@@ -17,15 +19,19 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final ReservationMapper reservationMapper;
+    private final AssignmentMapper assignmentMapper;
 
-    public ScheduleService(final ScheduleRepository scheduleRepository, final ReservationMapper reservationMapper) {
+    public ScheduleService(final ScheduleRepository scheduleRepository,
+                           final ReservationMapper reservationMapper,
+                           final AssignmentMapper assignmentMapper) {
         this.scheduleRepository = scheduleRepository;
         this.reservationMapper = reservationMapper;
+        this.assignmentMapper = assignmentMapper;
     }
 
     public Schedule getScheduleForDay(final LocalDate date) {
         return scheduleRepository.findById(date)
-                .orElseGet(() -> new Schedule(date, List.of()));
+                .orElseGet(() -> new Schedule(date, List.of(), List.of()));
     }
 
     public Schedule getScheduleForToday() {
@@ -51,7 +57,7 @@ public class ScheduleService {
         if (scheduleRepository.existsById(request.date())) {
             throw new IllegalArgumentException("A schedule for " + request.date() + " already exists");
         }
-        final var schedule = new Schedule(request.date(), toReservations(request));
+        final var schedule = new Schedule(request.date(), toReservations(request), toAssignments(request));
 
         return scheduleRepository.save(schedule);
     }
@@ -61,6 +67,7 @@ public class ScheduleService {
         final Schedule schedule = scheduleRepository.findById(request.date())
                 .orElseThrow();
         schedule.replaceReservations(toReservations(request));
+        schedule.replaceAssignments(toAssignments(request));
 
         return scheduleRepository.save(schedule);
     }
@@ -73,6 +80,12 @@ public class ScheduleService {
     private List<Reservation> toReservations(final ScheduleRequest request) {
         return request.reservations().stream()
                 .map(reservationMapper::toEntity)
+                .toList();
+    }
+
+    private List<Assignment> toAssignments(final ScheduleRequest scheduleRequest) {
+        return scheduleRequest.assignments().stream()
+                .map(assignmentMapper::toEntity)
                 .toList();
     }
 }

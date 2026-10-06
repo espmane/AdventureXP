@@ -15,7 +15,7 @@ public class Employee {
     private String name;
     private String phoneNumber;
 
-    public Employee(String name, String phoneNumber) {
+    public Employee(final String name, final String phoneNumber) {
         this.name = name;
         this.phoneNumber = requireValidPhoneNumber(phoneNumber);
     }
@@ -48,7 +48,7 @@ public class Employee {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -56,7 +56,7 @@ public class Employee {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }
