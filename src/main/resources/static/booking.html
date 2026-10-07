@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking</title>
+</head>
+
+<body>
+
+<h1>Book en aktivitet</h1>
+
+<div class="container">
+    <form id="bookingForm">
+        <div>
+            <label for="activity">Aktivitet</label><br>
+            <select id="activity" required>
+                <option value="">Vælg aktivitet…</option>
+            </select>
+        </div>
+        <div>
+            <label for="name">Navn</label><br>
+            <input type="text" id="name" required autocomplete="name">
+        </div>
+        <div>
+            <label for="phone">Telefonnummer</label><br>
+            <input type="tel" id="phone" required inputmode="numeric" maxlength="8" minlength="8">
+        </div>
+        <div>
+            <label for="participants">Antal deltagere</label><br>
+            <input type="number" id="participants" required min="1" step="1">
+        </div>
+        <div>
+            <label for="start">Start</label><br>
+            <input type="datetime-local" id="start" required>
+        </div>
+        <div>
+            <label for="hours">Timer</label><br>
+            <select id="hours" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+        <div>
+            <p id="totalPrice"></p><br>
+            <button class="create-btn" type="submit">Book</button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/booking.js"></script>
+
+</body>
+</html>
