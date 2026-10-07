@@ -16,14 +16,18 @@ public class Schedule {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "schedule_id", nullable = false)
     @OrderBy("timeInterval.start")
-    private List<Reservation> reservationList;
+    private final List<Reservation> reservationList = new ArrayList<>();
 
-    public Schedule(final LocalDate date, final List<Reservation> reservations) {
+    @ElementCollection
+    @CollectionTable(name = "schedule_assignments",
+            joinColumns = @JoinColumn(name = "schedule_date"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"schedule_date", "employee_id"}))
+    private final List<Assignment> assignmentList = new ArrayList<>();
+
+    public Schedule(final LocalDate date, final List<Reservation> reservations, final List<Assignment> assignments) {
         this.date = date;
-        this.reservationList = new ArrayList<>();
-        for (final Reservation reservation : reservations) {
-            addReservation(reservation);
-        }
+        for (final Reservation reservation : reservations) addReservation(reservation);
+        for (final Assignment assignment : assignments) addAssignment(assignment);
     }
 
     public Schedule() {}
@@ -54,12 +58,36 @@ public class Schedule {
         reservationList.add(reservation);
     }
 
+    public List<Assignment> getAssignments() {
+        return assignmentList;
+    }
+
+    public void addAssignment(final Assignment assignment) {
+        if (assignment == null) {
+            throw new IllegalArgumentException("Assignment cannot be null");
+        }
+
+        // throw if the employee is already assigned.
+        for (final Assignment existing : assignmentList) {
+            if (existing.getEmployee().getId().equals(assignment.getEmployee().getId())) {
+                throw new IllegalArgumentException("Employee is already assigned to an activity this day");
+            }
+        }
+
+        assignmentList.add(assignment);
+    }
+
+
     public void replaceReservations(final List<Reservation> reservations) {
         reservationList.clear();
 
-        for (final Reservation reservation : reservations) {
-            addReservation(reservation);
-        }
+        for (final Reservation reservation : reservations) addReservation(reservation);
+    }
+
+    public void replaceAssignments(final List<Assignment> list) {
+        assignmentList.clear();
+
+        for (final Assignment assignment : list) addAssignment(assignment);
     }
 
     public void removeReservation(final Reservation reservation) {
