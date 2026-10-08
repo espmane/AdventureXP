@@ -1,23 +1,27 @@
 const reservations = [
     {
+        id: 1,
         activity: "Gocart",
         date: "2026-10-04",
         time: "10:00",
         participants: 8
     },
     {
+        id: 2,
         activity: "Paintball",
         date: "2026-10-04",
         time: "13:00",
         participants: 12
     },
     {
+        id: 3,
         activity: "Minigolf",
         date: "2026-10-06",
         time: "15:00",
         participants: 4
     },
     {
+        id: 4,
         activity: "Sumo Wrestling",
         date: "2026-10-15",
         time: "12:00",
@@ -52,8 +56,24 @@ function displayReservations(list) {
             reservation.time + " - " +
             reservation.participants + " deltagere";
 
+        const editButton = document.createElement("button");
+        editButton.textContent = "Rediger";
+
+        editButton.addEventListener("click", () => {
+            editReservation(reservation.id);
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Slet";
+
+        deleteButton.addEventListener("click", () => {
+            deleteReservation(reservation.id);
+        });
+
         div.appendChild(activity);
         div.appendChild(info);
+        div.appendChild(editButton);
+        div.appendChild(deleteButton);
 
         reservationsElement.appendChild(div);
     });
@@ -71,20 +91,6 @@ function showDay() {
     );
 
     displayReservations(result);
-
-    document.querySelector("#logoutBtn").addEventListener("click", async () => {
-        await logout();
-        window.location.href = "login.html";
-    });
-
-// Kun medarbejdere der er logget ind må se siden
-    isLoggedIn().then(loggedIn => {
-        if (loggedIn) {
-            showDay();
-        } else {
-            window.location.href = "login.html";
-        }
-    });
 }
 
 
@@ -96,6 +102,7 @@ function showWeek() {
     endDate.setDate(endDate.getDate() + 7);
 
     const result = reservations.filter(reservation => {
+
         const date = new Date(reservation.date);
 
         return date >= currentDate && date < endDate;
@@ -121,8 +128,105 @@ function showMonth() {
 }
 
 
+async function deleteReservation(id) {
+
+    const confirmed = confirm("Er du sikker på, at du vil slette reservationen?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/reservations/${id}/delete`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Kunne ikke slette reservationen");
+        }
+
+        alert("Reservationen er slettet");
+
+        showDay();
+
+    } catch (error) {
+
+        alert("Der opstod en fejl");
+        console.error(error);
+    }
+}
+
+
+async function editReservation(id) {
+
+    const reservation = reservations.find(
+        reservation => reservation.id === id
+    );
+
+    if (!reservation) {
+        return;
+    }
+
+    const participants = prompt(
+        "Antal deltagere:",
+        reservation.participants
+    );
+
+    if (participants === null) {
+        return;
+    }
+
+    const time = prompt(
+        "Tid:",
+        reservation.time
+    );
+
+    if (time === null) {
+        return;
+    }
+
+    const request = {
+        activityId: 1,
+        name: "Hector",
+        phoneNumber: "12345678",
+        amountPeople: Number(participants),
+        start: reservation.date + "T" + time + ":00",
+        end: reservation.date + "T" + time + ":00"
+    };
+
+    try {
+
+        const response = await fetch(
+            `/reservations/${id}/update`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(request)
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Kunne ikke redigere reservationen");
+        }
+
+        alert("Reservationen er opdateret");
+
+        showDay();
+
+    } catch (error) {
+
+        alert("Der opstod en fejl");
+        console.error(error);
+    }
+}
+
+
 dayBtn.addEventListener("click", showDay);
 weekBtn.addEventListener("click", showWeek);
 monthBtn.addEventListener("click", showMonth);
-
-showDay();
