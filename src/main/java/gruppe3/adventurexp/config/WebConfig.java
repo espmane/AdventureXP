@@ -39,7 +39,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         if ("OPTIONS".equalsIgnoreCase(method)) return true;
         if ("GET".equalsIgnoreCase(method) && path.startsWith("/activities/")) return true;
-        if ("POST".equalsIgnoreCase(method) && path.equals("/reservations/create")) return true;
+        if ("GET".equalsIgnoreCase(method) && (path.equals("/activities") || path.startsWith("/activities/"))) return true;
+        if ("POST".equalsIgnoreCase(method) && (path.equals("/reservations/save") || path.equals("/reservations/company"))) return true;
         return false;
     }
 }

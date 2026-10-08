@@ -16,13 +16,13 @@ public class Schedule {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "schedule_id", nullable = false)
     @OrderBy("timeInterval.start")
-    private final List<Reservation> reservationList = new ArrayList<>();
+    private List<Reservation> reservationList = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "schedule_assignments",
             joinColumns = @JoinColumn(name = "schedule_date"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"schedule_date", "employee_id"}))
-    private final List<Assignment> assignmentList = new ArrayList<>();
+    private List<Assignment> assignmentList = new ArrayList<>();
 
     public Schedule(final LocalDate date, final List<Reservation> reservations, final List<Assignment> assignments) {
         this.date = date;
