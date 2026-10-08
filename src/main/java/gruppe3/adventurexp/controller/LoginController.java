@@ -16,15 +16,6 @@ public class LoginController {
     private static final String SHARED_USERNAME = "admin";
     private static final String SHARED_PASSWORD = "1234";
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password, HttpSession session) {
-        if (isValidLogin(username, password)) {
-            session.setAttribute("loggedIn", true);
-            return ResponseEntity.ok("Logged in");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
-    }
-
     @GetMapping("/me")
     public ResponseEntity<?> me(HttpSession session) {
         Object loggedIn = session.getAttribute("loggedIn");
@@ -34,6 +25,15 @@ public class LoginController {
         }
 
         return ResponseEntity.ok("Logged in");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password, HttpSession session) {
+        if (isValidLogin(username, password)) {
+            session.setAttribute("loggedIn", true);
+            return ResponseEntity.ok("Logged in");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
     }
 
     @PostMapping("/logout")
@@ -46,4 +46,3 @@ public class LoginController {
         return SHARED_USERNAME.equals(username) && SHARED_PASSWORD.equals(password);
     }
 }
-

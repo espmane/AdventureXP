@@ -1,8 +1,7 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdventureXP - Medarbejder login</title>
 </head>
 
@@ -31,13 +30,6 @@
     const form = document.querySelector("#loginForm");
     const errorText = document.querySelector("#error");
 
-    // Er man allerede logget ind, spring login over
-    isLoggedIn().then(loggedIn => {
-        if (loggedIn) {
-            window.location.href = "index.html";
-        }
-    });
-
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
         errorText.textContent = "";
@@ -47,7 +39,7 @@
 
         try {
             await login(username, password);
-            window.location.href = "index.html"; // reservationssiden
+            window.location.href = "overview.html";
         } catch (error) {
             errorText.textContent = error.message;
         }

@@ -1,4 +1,4 @@
-const BASE = "http://localhost:8080";
+const BASE = "";
 
 async function login(username, password) {
     const response = await fetch(`${BASE}/auth/login`, {
@@ -26,15 +26,5 @@ async function isLoggedIn() {
     } catch (error) {
         return false;
     }
-}
-
-async function api(path, options = {}) {
-    const response = await fetch(`${BASE}${path}`, { credentials: "include", ...options });
-
-    if (response.status === 401) {
-        window.location.href = "/login.html";
-        return null;
-    }
-    return response;
 }
 

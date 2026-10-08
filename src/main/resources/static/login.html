@@ -29,7 +29,7 @@
 
     isLoggedIn().then(loggedIn => {
         if (loggedIn) {
-            window.location.href = "/";
+            window.location.href = "/overview.html";
         }
     });
 
@@ -42,7 +42,7 @@
 
         try {
             await login(username, password);
-            window.location.href = "/";
+            window.location.href = "/overview.html";
         } catch (error) {
             errorText.textContent = error.message;
         }
@@ -50,4 +50,3 @@
 </script>
 </body>
 </html>
-

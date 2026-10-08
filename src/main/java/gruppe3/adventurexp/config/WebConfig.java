@@ -17,18 +17,29 @@ public class WebConfig implements WebMvcConfigurer {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
                     throws Exception {
-                if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+                if (isPublic(request)) {
                     return true;
                 }
                 HttpSession session = request.getSession(false);
                 if (session != null && session.getAttribute("loggedIn") != null) {
-                    return true; // logget ind
+                    return true;
                 }
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("text/plain;charset=UTF-8");
                 response.getWriter().write("Not logged in");
                 return false;
             }
-        }).addPathPatterns("/activities/**", "/reservations/**"); // Her skal vi fikse det med Auth @RequestMapping, er usikker om den finder den gennem /auth requestmapping.
+        }).addPathPatterns("/activities/**", "/reservations/**");
+    }
+
+    // Det kunder må uden login
+    private boolean isPublic(HttpServletRequest request) {
+        String method = request.getMethod();
+        String path = request.getRequestURI();
+
+        if ("OPTIONS".equalsIgnoreCase(method)) return true;
+        if ("GET".equalsIgnoreCase(method) && path.startsWith("/activities/")) return true;
+        if ("POST".equalsIgnoreCase(method) && path.equals("/reservations/create")) return true;
+        return false;
     }
 }

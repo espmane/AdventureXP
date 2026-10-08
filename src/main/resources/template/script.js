@@ -71,6 +71,20 @@ function showDay() {
     );
 
     displayReservations(result);
+
+    document.querySelector("#logoutBtn").addEventListener("click", async () => {
+        await logout();
+        window.location.href = "login.html";
+    });
+
+// Kun medarbejdere der er logget ind må se siden
+    isLoggedIn().then(loggedIn => {
+        if (loggedIn) {
+            showDay();
+        } else {
+            window.location.href = "login.html";
+        }
+    });
 }
 
 
