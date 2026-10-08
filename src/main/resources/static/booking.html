@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Booking</title>
-    <link rel="stylesheet" href="/fragments/navbar.css">
+    <link rel="stylesheet" href="booking.css">
 </head>
 
 <body>
@@ -42,11 +42,15 @@
             <input type="number" id="participants" required min="1" step="1">
         </div>
         <div>
-            <label for="start">Start</label><br>
-            <input type="datetime-local" id="start" required>
+            <label for="startDate">Start dato</label><br>
+            <input type="date" id="startDate" required>
         </div>
         <div>
-            <label for="hours">Timer</label><br>
+            <label for="startTime">Start tid</label><br>
+            <input type="time" id="startTime" step="3600" required>
+        </div>
+        <div>
+            <label for="hours">Timer</label>
             <select id="hours" required>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -55,7 +59,11 @@
             </select>
         </div>
         <div>
-            <p id="totalPrice"></p><br>
+            <input type="checkbox" id="company">
+            <label for="company">Firma booking – book alle aktiviteter</label>
+        </div>
+        <div>
+            <p id="totalPrice"></p>
             <button class="create-btn" type="submit">Book</button>
         </div>
     </form>
@@ -65,7 +73,7 @@
 <script>
     mountFragment("navbarHost", "/fragments/customer-navbar.html");
 </script>
-<script src="/js/booking.js"></script>
+<script src="/static/js/booking.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,61 @@
+body > h1 {
+    margin: 0;
+    padding: 30px 20px 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px 20px 50px;
+}
+
+#bookingForm > div {
+    margin-bottom: 15px;
+}
+
+#bookingForm label {
+    font-weight: bold;
+}
+
+#bookingForm input,
+#bookingForm select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+#totalPrice {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #3e5f45;
+}
+
+.create-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 30px;
+    background: #8bc34a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.create-btn:hover {
+    background: #3e5f45;
+}
+.company-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.company-row input {
+    width: auto;
+    display: inline-block;
+}
