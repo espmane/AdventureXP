@@ -16,6 +16,17 @@ body {
     margin: 0 0 15px;
 }
 
+.existing-booking {
+    margin-top: 25px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.existing-booking a {
+    color: white;
+    text-decoration: underline;
+}
+
 .btn {
     display: inline-block;
     margin-top: 20px;
@@ -31,9 +42,17 @@ body {
     text-align: center;
 }
 
+/*.info {*/
+/*    padding: 50px 40px;*/
+/*    text-align: center;*/
+/*}*/
+
 .info {
-    padding: 50px 40px;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 50px 20px;
     text-align: center;
+    line-height: 1.6;
 }
 
 #activityList {
