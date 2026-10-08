@@ -122,13 +122,19 @@ async function sendData() {
     }
 
     try {
-        await fetch(companySelect.checked ? COMPANY_SAVE_URL : SAVE_URL, {
+        const response = await fetch(companySelect.checked ? COMPANY_SAVE_URL : SAVE_URL, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(request)
         })
+        if (!response.ok) {
+            throw new Error(await response.text())
+        }
+        alert("Booking modtaget.")
+        window.location.href = "/front.html"
     } catch (error) {
         console.error(error)
+        alert("Booking fejlede. Prøv igen.")
     }
 }
 
