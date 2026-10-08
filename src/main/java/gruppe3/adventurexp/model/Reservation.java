@@ -13,13 +13,34 @@ public class Reservation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "activity_id")
+    @JoinTable(
+            name = "activities_reservations",
+    joinColumns = @JoinColumn(name= "reservation_id"),
+    inverseJoinColumns = @JoinColumn(name = "activity_id")
+    )
     private Activity activity;
 
+
+
     private String name;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "amount_people")
     private int amountPeople;
+
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(
+                    name = "start",
+                    column = @Column(name = "start_time")
+            ),
+            @AttributeOverride(
+                    name = "end",
+                    column = @Column(name = "end_time")
+            )
+    })
     private TimeInterval timeInterval;
     private int price;
 
