@@ -71,20 +71,6 @@ function showDay() {
     );
 
     displayReservations(result);
-
-    document.querySelector("#logoutBtn").addEventListener("click", async () => {
-        await logout();
-        window.location.href = "login.html";
-    });
-
-// Kun medarbejdere der er logget ind må se siden
-    isLoggedIn().then(loggedIn => {
-        if (loggedIn) {
-            showDay();
-        } else {
-            window.location.href = "login.html";
-        }
-    });
 }
 
 
@@ -125,4 +111,23 @@ dayBtn.addEventListener("click", showDay);
 weekBtn.addEventListener("click", showWeek);
 monthBtn.addEventListener("click", showMonth);
 
-showDay();
+document.addEventListener("click", async (event) => {
+    if (event.target && event.target.id === "logoutBtn") {
+        await logout();
+        window.location.href = "login.html";
+    }
+});
+
+async function initOverviewPage() {
+    const loggedIn = await isLoggedIn();
+
+    if (!loggedIn) {
+        window.location.href = "login.html";
+        return;
+    }
+
+
+    showDay();
+}
+
+initOverviewPage();

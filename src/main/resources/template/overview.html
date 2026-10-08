@@ -7,9 +7,20 @@
 
 <body>
 
-<h1>Reservationer</h1>
+<div id="navbarHost">
+    <nav class="navbar navbar-employee">
+        <div class="navbar-left">
+            <a class="brand" href="/overview.html">AdventureXP Medarbejder</a>
+        </div>
+        <div class="navbar-right">
+            <a class="nav-link" href="/overview.html">Home</a>
+            <a class="nav-link" href="/overview.html">Reservationer</a>
+            <button id="logoutBtn" class="nav-btn" type="button">Log ud</button>
+        </div>
+    </nav>
+</div>
 
-<button id="logoutBtn">Log ud</button>
+<h1>Reservationer</h1>
 
 <div>
     <button id="dayBtn">Dag</button>
@@ -21,7 +32,12 @@
 
 <div id="reservations"></div>
 
-<script src="auth.js"></script>
+<link rel="stylesheet" href="/fragments/navbar.css">
+<script src="/fragments/navbar-loader.js"></script>
+<script>
+    mountFragment("navbarHost", "/fragments/employee-navbar.html");
+</script>
+<script src="Login.js"></script>
 <script src="script.js"></script>
 
 </body>
