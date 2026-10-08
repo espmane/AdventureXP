@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    background: #3e5f45;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin: 0 0 15px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: #8bc34a;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.activities {
+    padding: 50px 40px;
+    text-align: center;
+}
+
+.info {
+    padding: 50px 40px;
+    text-align: center;
+}
+
+#activityList {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    width: 220px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
