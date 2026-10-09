@@ -126,23 +126,8 @@ body {
     margin-bottom: 20px;
 }
 
-#schedule {
-    display: grid;
-    gap: 15px;
-}
-
-.employee-shift {
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-}
-
-.employee-shift h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
-}
-
-.employee-shift p {
-    margin: 8px 0;
+.employee-shift .shift-date {
+    margin: 12px 0 2px;
+    color: #3e5f45;
+    font-weight: bold;
 }

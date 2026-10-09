@@ -8,7 +8,8 @@ const weekBtn = document.querySelector("#weekBtn");
 const monthBtn = document.querySelector("#monthBtn");
 const scheduleElement = document.querySelector("#schedule");
 
-const currentDate = new Date(2026, 9, 4);
+const currentDate = new Date();
+const dayNames = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"];
 
 const activityNames = {
     1: "Gocart",
@@ -283,6 +284,15 @@ async function editReservation(id) {
 }
 
 
+function formatDayLabel(dateString) {
+    const date = new Date(dateString + "T12:00:00");
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${dayNames[date.getDay()]} ${day}-${month}-${year}`;
+}
+
 function formatDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -373,13 +383,15 @@ function displaySchedule(schedules) {
                 byEmployee.set(employeeId, {
                     name: assignment.employeeName ||
                         "Medarbejder " + employeeId,
-                    shifts: []
+                    days: []
                 });
             }
 
-            byEmployee.get(employeeId).shifts.push({
-                date: schedule.date,
-                assignment: assignment
+            byEmployee.get(employeeId).days.push({
+                date: formatDayLabel(schedule.date),
+                activity: assignment.activityName ||
+                    activityNames[assignment.activityId] ||
+                    "Aktivitet " + assignment.activityId
             });
         });
     });
@@ -399,26 +411,16 @@ function displaySchedule(schedules) {
 
         card.appendChild(name);
 
-        employee.shifts.forEach(({ date, assignment }) => {
-            const activityName =
-                assignment.activityName ||
-                activityNames[assignment.activityId] ||
-                "Aktivitet " + assignment.activityId;
+        employee.days.forEach(day => {
+            const date = document.createElement("p");
+            date.classList.add("shift-date");
+            date.textContent = day.date;
+            card.appendChild(date);
 
-            const start = assignment.workStart
-                ? assignment.workStart.substring(11, 16)
-                : "Ukendt";
-
-            const end = assignment.workEnd
-                ? assignment.workEnd.substring(11, 16)
-                : "Ukendt";
-
-            const shift = document.createElement("p");
-
-            shift.textContent =
-                `${date} | ${activityName} | ${start} - ${end}`;
-
-            card.appendChild(shift);
+            const activity = document.createElement("p");
+            activity.classList.add("shift-activity");
+            activity.textContent = day.activity;
+            card.appendChild(activity);
         });
 
         scheduleElement.appendChild(card);
