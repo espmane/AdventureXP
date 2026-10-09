@@ -60,8 +60,9 @@ public class ReservationController {
     }
 
     @PostMapping("/company")
-    public List<Reservation> reserveAllActivities(@RequestBody Reservation request) {
-        return reservationService.reserveAllActivities(request);
+    public ResponseEntity<List<ReservationResponse>> reserveAllActivities(@RequestBody final ReservationRequest request) {
+        final var response = toResponse(reservationService.reserveAllActivities(request));
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}/delete")

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Booking</title>
-    <link rel="stylesheet" href="/navbar.css">
+    <link rel="stylesheet" href="booking.css">
 </head>
 
 <body>
@@ -31,22 +31,26 @@
         </div>
         <div>
             <label for="name">Navn</label><br>
-            <input type="text" id="name" required autocomplete="name">
+            <input type="text" id="name" required>
         </div>
         <div>
             <label for="phone">Telefonnummer</label><br>
-            <input type="tel" id="phone" required inputmode="numeric" maxlength="8" minlength="8">
+            <input type="tel" id="phone" maxlength="8" minlength="8" required>
         </div>
         <div>
             <label for="participants">Antal deltagere</label><br>
-            <input type="number" id="participants" required min="1" step="1">
+            <input type="number" id="participants" min="?" max ="?" step="1" required>
         </div>
         <div>
-            <label for="start">Start</label><br>
-            <input type="datetime-local" id="start" required>
+            <label for="startDate">Start dato</label><br>
+            <input type="date" id="startDate" min="?" required>
         </div>
         <div>
-            <label for="hours">Timer</label><br>
+            <label for="startTime">Start tid</label><br>
+            <input type="time" id="startTime" min="08:00" max="20:00" step="3600" required>
+        </div>
+        <div>
+            <label for="hours">Timer</label>
             <select id="hours" required>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -55,7 +59,11 @@
             </select>
         </div>
         <div>
-            <p id="totalPrice"></p><br>
+            <label for="company">Firma booking – book alle aktiviteter</label>
+            <input type="checkbox" id="company">
+        </div>
+        <div>
+            <p id="totalPrice"></p>
             <button class="create-btn" type="submit">Book</button>
         </div>
     </form>
