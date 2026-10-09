@@ -1,50 +1,56 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <title>AdventureXP - Forside</title>
-  <link rel="stylesheet" href="front.css">
-  <link rel="stylesheet" href="footer.css">
+    <meta charset="UTF-8">
+    <title>AdventureXP - Forside</title>
+    <link rel="stylesheet" href="/navbar.css">
+    <link rel="stylesheet" href="front.css">
+    <link rel="stylesheet" href="footer.css">
 </head>
 <body>
 
-<section class="hero">
-  <h1>Velkommen til Adventure Alley</h1>
-  <p>Book en aktivitet med vennerne, firmaet eller familien.</p>
-  <a href="booking.html" class="btn">Book nu</a>
+<div id="navbarHost"></div>
 
-  <p class="existing-booking">
-    Har du allerede en booking? Kontakt os på
-    <a href="tel:12345678">12 34 56 78</a> eller
-    <a href="mailto:info@adventurealley.dk">info@adventurealley.dk</a>
-    for at ændre eller aflyse den.
-  </p>
+<section class="hero">
+    <h1>Velkommen til Adventure Alley</h1>
+    <p>Book en aktivitet med vennerne, firmaet eller familien.</p>
+    <a href="booking.html" class="btn">Book nu</a>
+
+    <p class="existing-booking">
+        Har du allerede en booking? Kontakt os på
+        <a href="tel:12345678">12 34 56 78</a> eller
+        <a href="mailto:info@adventurealley.dk">info@adventurealley.dk</a>
+        for at ændre eller aflyse den.
+    </p>
 </section>
 
 <section class="activities">
-  <h2>Vores aktiviteter</h2>
-  <div id="activityList"></div>
-  <a href="booking.html" class="btn">Book en aktivitet</a>
+    <h2>Vores aktiviteter</h2>
+    <div id="activityList"></div>
+    <a href="booking.html" class="btn">Book en aktivitet</a>
 </section>
 
 <section class="info">
-  <h3>Lidt om os:</h3>
-  <p>
-  Adventure Alley startede som en lille bane med en stor idé: at give folk et sted,
-  hvor de kan lave noget sjovt sammen. I dag kommer tusindvis af gæster hvert år
-  for at grine, konkurrere og få pulsen op.
-  </p>
-  <p>
-    Vi tror på, at de bedste minder opstår, når man prøver noget nyt sammen.
-    Derfor gør vi alt for, at jeres besøg bliver nemt, trygt og sjovt fra start til slut.
-    I kommer bare, og vi sørger for resten.
-  </p>
+    <h3>Lidt om os:</h3>
+    <p>
+        Adventure Alley startede som en lille bane med en stor idé: at give folk et sted,
+        hvor de kan lave noget sjovt sammen. I dag kommer tusindvis af gæster hvert år
+        for at grine, konkurrere og få pulsen op.
+    </p>
+    <p>
+        Vi tror på, at de bedste minder opstår, når man prøver noget nyt sammen.
+        Derfor gør vi alt for, at jeres besøg bliver nemt, trygt og sjovt fra start til slut.
+        I kommer bare, og vi sørger for resten.
+    </p>
 </section>
 
+<script src="/Login.js"></script>
+<script src="/template/fragments/navbar-loader.js"></script>
 <script src="frontScript.js"></script>
 
 <div id="footer"></div>
 
 <script src="footer.js"></script>
 </body>
+
 </html>
