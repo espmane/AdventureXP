@@ -96,3 +96,27 @@ body {
     color: white;
 }
 
+#schedule {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#schedule > div {
+    width: 220px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+#schedule h3 {
+    margin: 0 0 10px;
+    color: #3e5f45;
+}
+
+#schedule p {
+    color: #555;
+}

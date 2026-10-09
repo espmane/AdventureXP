@@ -9,8 +9,8 @@ async function buildNavbar() {
         nav.innerHTML = `
             <a class="brand" href="/booking.html">AdventureXP Medarbejder</a>
             <div class="navbar-right">
-                <a class="nav-link" href="/booking.html">Home</a>
-                <a class="nav-link" href="/overview.html">Kalender</a>
+                <a class="nav-link" href="/booking.html">Kalender</a>
+                <a class="nav-link" href="/overview.html">Home</a>
                 <button id="navbarLogoutBtn" class="nav-btn" type="button">Log ud</button>
             </div>
         `;

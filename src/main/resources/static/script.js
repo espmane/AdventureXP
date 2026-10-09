@@ -6,6 +6,7 @@ const periodTitle = document.querySelector("#periodTitle");
 const dayBtn = document.querySelector("#dayBtn");
 const weekBtn = document.querySelector("#weekBtn");
 const monthBtn = document.querySelector("#monthBtn");
+const scheduleElement = document.querySelector("#schedule");
 
 const currentDate = new Date(2026, 9, 4);
 
@@ -114,6 +115,7 @@ function showDay() {
     );
 
     displayReservations(result);
+    loadSchedule();
 }
 
 
@@ -130,6 +132,7 @@ function showWeek() {
     });
 
     displayReservations(result);
+    loadSchedule();
 }
 
 
@@ -145,6 +148,7 @@ function showMonth() {
     });
 
     displayReservations(result);
+    loadSchedule();
 }
 
 
@@ -295,6 +299,101 @@ function formatDateTime(date) {
 
     return `${formatDate(date)}T${hours}:${minutes}:${seconds}`;
 }
+
+function getPeriodRange() {
+    const from = new Date(currentDate);
+    const to = new Date(currentDate);
+
+    if (selectedPeriod === "week") {
+        to.setDate(to.getDate() + 6);
+    } else if (selectedPeriod === "month") {
+        from.setDate(1);
+        to.setMonth(to.getMonth() + 1, 0); // sidste dag i måneden
+    }
+
+    return { from: formatDate(from), to: formatDate(to) };
+}
+
+
+async function loadSchedule() {
+    const { from, to } = getPeriodRange();
+
+    try {
+        const response = await fetch(
+            `${BASE_URL}/schedules?from=${from}&to=${to}`,
+            { credentials: "include" }
+        );
+
+        if (response.status === 401) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+        }
+
+        displaySchedule(await response.json());
+
+    } catch (error) {
+        console.error(error);
+        scheduleElement.textContent = "Kunne ikke hente vagtplan.";
+    }
+}
+
+
+function displaySchedule(schedules) {
+    scheduleElement.replaceChildren();
+
+    // Saml alle vagter pr. medarbejder
+    const byEmployee = new Map();
+
+    schedules.forEach(schedule => {
+        schedule.assignments.forEach(assignment => {
+            if (!byEmployee.has(assignment.employeeId)) {
+                byEmployee.set(assignment.employeeId, {
+                    name: assignment.employeeName || "Medarbejder " + assignment.employeeId,
+                    shifts: []
+                });
+            }
+            byEmployee.get(assignment.employeeId).shifts.push({
+                date: schedule.date,
+                assignment: assignment
+            });
+        });
+    });
+
+    if (byEmployee.size === 0) {
+        scheduleElement.textContent = "Ingen vagter i denne periode.";
+        return;
+    }
+
+    byEmployee.forEach(employee => {
+        const div = document.createElement("div");
+
+        const title = document.createElement("h3");
+        title.textContent = employee.name;
+        div.appendChild(title);
+
+        employee.shifts.forEach(({ date, assignment }) => {
+            const activityName =
+                assignment.activityName ||
+                activityNames[assignment.activityId] ||
+                "Aktivitet " + assignment.activityId;
+
+            const hours = assignment.workStart
+                ? assignment.workStart.substring(11, 16) + " - " + assignment.workEnd.substring(11, 16)
+                : "tid ikke fastlagt";
+
+            const line = document.createElement("p");
+            line.textContent = `${date} · ${activityName} · ${hours}`;
+            div.appendChild(line);
+        });
+
+        scheduleElement.appendChild(div);
+    });
+}
+
 
 
 dayBtn.addEventListener("click", showDay);

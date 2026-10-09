@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                 response.getWriter().write("Not logged in");
                 return false;
             }
-        }).addPathPatterns("/activities/**", "/reservations/**");
+        }).addPathPatterns("/activities/**", "/reservations/**", "/schedules/**");
     }
 
     // Det kunder må uden login
