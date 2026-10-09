@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdventureXP - Login</title>
+    <link rel="stylesheet" href="/login.css">
 </head>
 <body>
-<h1>Login</h1>
 
-<form id="loginForm">
-    <div>
-        <label for="username">Brugernavn</label><br>
+<div class="login-card">
+    <h1>Login</h1>
+
+    <form id="loginForm">
+        <label for="username">Brugernavn</label>
         <input type="text" id="username" required autofocus>
-    </div>
-    <div>
-        <label for="password">Adgangskode</label><br>
-        <input type="password" id="password" required>
-    </div>
-    <button type="submit">Log ind</button>
-</form>
 
-<p id="error" style="color: red;"></p>
+        <label for="password">Adgangskode</label>
+        <input type="password" id="password" required>
+
+        <button type="submit">Log ind</button>
+    </form>
+
+    <p id="error"></p>
+
+    <a href="/front.html" class="back-link">Tilbage til forsiden</a>
+</div>
 
 <script src="/Login.js"></script>
 <script>

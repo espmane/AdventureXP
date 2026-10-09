@@ -2,65 +2,98 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Booking</title>
-    <link rel="stylesheet" href="/booking.css">
+    <title>AdventureXP - Booking</title>
     <link rel="stylesheet" href="/navbar.css">
+    <link rel="stylesheet" href="/booking.css">
+    <link rel="stylesheet" href="/footer.css">
 </head>
 
 <body>
 
-<h1>Book en aktivitet</h1>
+<div id="navbarHost"></div>
 
-<div class="container">
-    <form id="bookingForm">
-        <div>
-            <label for="activity">Aktivitet</label><br>
-            <select id="activity" required>
-                <option value="">Vælg aktivitet…</option>
-            </select>
-        </div>
-        <div>
-            <label for="name">Navn</label><br>
-            <input type="text" id="name" required>
-        </div>
-        <div>
-            <label for="phone">Telefonnummer</label><br>
-            <input type="tel" id="phone" maxlength="8" minlength="8" required>
-        </div>
-        <div>
-            <label for="participants">Antal deltagere</label><br>
-            <input type="number" id="participants" min="?" max ="?" step="1" required>
-        </div>
-        <div>
-            <label for="startDate">Start dato</label><br>
-            <input type="date" id="startDate" min="?" required>
-        </div>
-        <div>
-            <label for="startTime">Start tid</label><br>
-            <input type="time" id="startTime" min="08:00" max="20:00" step="3600" required>
-        </div>
-        <div>
-            <label for="hours">Timer</label>
-            <select id="hours" required>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-        </div>
-        <div>
-            <label for="company">Firma booking – book alle aktiviteter</label>
-            <input type="checkbox" id="company">
-        </div>
-        <div>
+<div class="page">
+    <a href="/front.html" class="back-btn">← Tilbage til forsiden</a>
+
+    <div class="container">
+        <h1>Book en aktivitet</h1>
+
+        <form id="bookingForm">
+            <div class="field">
+                <label for="activity">Aktivitet</label>
+                <select id="activity" required>
+                    <option value="">Vælg aktivitet…</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label for="name">Navn</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="field">
+                    <label for="phone">Telefonnummer</label>
+                    <input type="tel" id="phone" maxlength="8" minlength="8" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label for="startDate">Start dato</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="field">
+                    <label for="startTime">Start tid</label>
+                    <select id="startTime" required>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label for="participants">Antal deltagere</label>
+                    <input type="number" id="participants" step="1" required>
+                </div>
+                <div class="field">
+                    <label for="hours">Timer</label>
+                    <select id="hours" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="company-row">
+                <input type="checkbox" id="company">
+                <label for="company">Firma booking – book alle aktiviteter</label>
+            </div>
+
             <p id="totalPrice"></p>
             <button class="create-btn" type="submit">Book</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
+
+<div id="footer"></div>
 
 <script src="/Login.js"></script>
 <script src="/navbar.js"></script>
+<script src="/footer.js"></script>
 <script src="/js/booking.js"></script>
 
 </body>
