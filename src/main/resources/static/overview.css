@@ -6,27 +6,28 @@ body {
 
 .hero {
     text-align: center;
-    padding: 40px 20px;
+    padding: 100px 20px;
     background: #3e5f45;
     color: white;
 }
 
 .hero h1 {
-    font-size: 40px;
-    margin: 0 0 10px;
+    font-size: 48px;
+    margin: 0 0 15px;
 }
 
 #logoutBtn {
-    padding: 10px 20px;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
     background: #8bc34a;
     color: white;
-    border: none;
+    text-decoration: none;
     border-radius: 5px;
-    cursor: pointer;
 }
 
 .overview {
-    padding: 40px;
+    padding: 50px 40px;
     text-align: center;
 }
 
@@ -60,15 +61,16 @@ body {
 }
 
 #reservations > div {
-    width: 250px;
+    width: 220px;
     padding: 20px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 #reservations h3 {
-    margin-top: 0;
+    margin: 0 0 10px;
     color: #3e5f45;
 }
 
@@ -78,7 +80,7 @@ body {
 
 #reservations button {
     padding: 8px 15px;
-    margin: 5px;
+    margin: 5px 5px 0 0;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -93,3 +95,4 @@ body {
     background: #c94c4c;
     color: white;
 }
+

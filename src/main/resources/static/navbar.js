@@ -5,7 +5,7 @@ async function buildNavbar() {
     nav.className = "navbar";
 
     if (loggedIn) {
-        // Medarbejder
+        //kunde
         nav.innerHTML = `
             <a class="brand" href="/booking.html">AdventureXP Medarbejder</a>
             <div class="navbar-right">
@@ -15,13 +15,12 @@ async function buildNavbar() {
             </div>
         `;
     } else {
-        // Kunde
+        // medarbejder
         nav.innerHTML = `
             <a class="brand" href="/front.html">AdventureXP</a>
             <div class="navbar-right">
                 <a class="nav-link" href="/front.html">Forside</a>
                 <a class="nav-link" href="/booking.html">Book events</a>
-                <a class="nav-link" href="/login.html">Medarbejder login</a>
             </div>
         `;
     }
