@@ -6,6 +6,7 @@ import gruppe3.adventurexp.model.TimeInterval;
 import gruppe3.adventurexp.model.dto.ReservationRequest;
 import gruppe3.adventurexp.repository.ActivityRepository;
 import gruppe3.adventurexp.repository.ReservationRepository;
+import gruppe3.adventurexp.repository.ScheduleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,7 +18,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 class ReservationServiceTest {
@@ -27,6 +27,9 @@ class ReservationServiceTest {
 
     @Mock
     private ActivityRepository activityRepository;
+
+    @Mock
+    private ScheduleRepository scheduleRepository;
 
     private ReservationService reservationService;
 
@@ -40,7 +43,8 @@ class ReservationServiceTest {
 
         reservationService = new ReservationService(
                 reservationRepository,
-                activityRepository
+                activityRepository,
+                scheduleRepository
         );
 
         activity = new Activity(
@@ -110,8 +114,8 @@ class ReservationServiceTest {
         when(activityRepository.findById(1L))
                 .thenReturn(Optional.of(activity));
 
-        when(reservationRepository.save(any(Reservation.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(scheduleRepository.findById(any()))
+                .thenReturn(Optional.empty());
 
         Reservation result = reservationService.save(request);
 
@@ -122,7 +126,7 @@ class ReservationServiceTest {
         assertEquals(activity, result.getActivity());
 
         verify(activityRepository).findById(1L);
-        verify(reservationRepository).save(any(Reservation.class));
+        verify(scheduleRepository).saveAndFlush(any());
     }
 
     @Test
@@ -183,11 +187,20 @@ class ReservationServiceTest {
         when(activityRepository.findAll())
                 .thenReturn(List.of(activity, paintball));
 
-        when(reservationRepository.saveAll(anyList()))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(scheduleRepository.findById(any()))
+                .thenReturn(Optional.empty());
+
+        ReservationRequest request = new ReservationRequest(
+                null,
+                "Tom",
+                "12345678",
+                4,
+                LocalDateTime.of(2026, 10, 10, 10, 0),
+                LocalDateTime.of(2026, 10, 10, 11, 0)
+        );
 
         List<Reservation> result =
-                reservationService.reserveAllActivities(reservation);
+                reservationService.reserveAllActivities(request);
 
         assertEquals(2, result.size());
 
@@ -202,6 +215,6 @@ class ReservationServiceTest {
         );
 
         verify(activityRepository).findAll();
-        verify(reservationRepository).saveAll(anyList());
+        verify(scheduleRepository).saveAndFlush(any());
     }
 }
