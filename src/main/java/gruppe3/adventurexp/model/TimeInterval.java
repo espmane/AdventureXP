@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 
 /** TimeInterval represents a period of time with a start time and an end time.*/
 @Embeddable
-@AttributeOverride(name = "end", column = @Column(name = "end_time"))
-@AttributeOverride(name = "start", column =  @Column(name = "start_time"))
 public record TimeInterval(LocalDateTime start, LocalDateTime end) {
 
     public TimeInterval {

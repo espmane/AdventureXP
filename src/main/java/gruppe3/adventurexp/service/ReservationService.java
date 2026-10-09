@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ReservationService {
@@ -36,13 +37,18 @@ public class ReservationService {
 
     public Reservation getById(final Long id) {
         return reservationRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new NoSuchElementException(
+                                "Reservation not found: " + id
+                        ));
     }
 
     public Reservation save(final ReservationRequest request) {
         final Activity activity = activityRepository
                 .findById(request.activityId())
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new NoSuchElementException("Activity not found")
+                );
 
         final TimeInterval timeInterval =
                 new TimeInterval(request.start(), request.end());
@@ -56,7 +62,9 @@ public class ReservationService {
         reservation.setPhoneNumber(request.phoneNumber());
         reservation.setAmountPeople(request.amountPeople());
         reservation.setTimeInterval(timeInterval);
-        reservation.setPrice(price);
+        reservation.setPrice(
+                reservation.calculatePrice(activity.getPrice())
+        );
 
         final Schedule schedule = scheduleFor(request.start());
         schedule.addReservation(reservation);
@@ -87,7 +95,10 @@ public class ReservationService {
         reservation.setPhoneNumber(request.phoneNumber());
         reservation.setAmountPeople(request.amountPeople());
         reservation.setTimeInterval(timeInterval);
-        reservation.setPrice(price);
+
+        reservation.setPrice(
+                reservation.calculatePrice(activity.getPrice())
+        );
 
         return reservationRepository.save(reservation);
     }
@@ -116,9 +127,7 @@ public class ReservationService {
 
     public void remove(final Long id) {
 
-        final Reservation reservation = reservationRepository
-                .findById(id)
-                .orElseThrow();
+        final Reservation reservation = getById(id);
 
         reservationRepository.delete(reservation);
     }
