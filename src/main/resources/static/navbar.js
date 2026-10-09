@@ -21,13 +21,14 @@ async function buildNavbar() {
             <div class="navbar-right">
                 <a class="nav-link" href="/front.html">Forside</a>
                 <a class="nav-link" href="/booking.html">Book events</a>
+                <a class="nav-link" href="/login.html">Medarbejder login</a>
             </div>
         `;
     }
 
     document.body.prepend(nav);
 
-    // Log ud (både navbarens knap og evt. #logoutBtn på siden)
+    // Log ud (både navbarens knap og #logoutBtn på overview-siden)
     document.querySelectorAll("#navbarLogoutBtn, #logoutBtn").forEach(button => {
         button.addEventListener("click", async () => {
             await logout();

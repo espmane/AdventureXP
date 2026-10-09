@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "";
 
 const reservationsElement = document.querySelector("#reservations");
 const periodTitle = document.querySelector("#periodTitle");
@@ -25,6 +25,11 @@ async function loadReservations() {
             method: "GET",
             credentials: "include"
         });
+
+        if (response.status === 401) {
+            window.location.href = "/login.html";
+            return;
+        }
 
         if (!response.ok) {
             throw new Error("HTTP " + response.status);
