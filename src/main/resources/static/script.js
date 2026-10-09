@@ -315,14 +315,24 @@ function getPeriodRange() {
 }
 
 
+
 async function loadSchedule() {
-    const { from, to } = getPeriodRange();
+    let url;
+
+    if (selectedPeriod === "day") {
+        const date = formatDate(currentDate);
+        url = `${BASE_URL}/schedule/day?date=${date}`;
+    } else if (selectedPeriod === "week") {
+        url = `${BASE_URL}/schedule/week`;
+    } else {
+        url = `${BASE_URL}/schedule/month`;
+    }
 
     try {
-        const response = await fetch(
-            `${BASE_URL}/schedules?from=${from}&to=${to}`,
-            { credentials: "include" }
-        );
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "include"
+        });
 
         if (response.status === 401) {
             window.location.href = "/login.html";
@@ -333,30 +343,41 @@ async function loadSchedule() {
             throw new Error("HTTP " + response.status);
         }
 
-        displaySchedule(await response.json());
+        const data = await response.json();
+
+        const schedules = Array.isArray(data) ? data : [data];
+
+        displaySchedule(schedules);
 
     } catch (error) {
         console.error(error);
-        scheduleElement.textContent = "Kunne ikke hente vagtplan.";
+        scheduleElement.textContent =
+            "Kunne ikke hente vagtplan.";
     }
 }
+
 
 
 function displaySchedule(schedules) {
     scheduleElement.replaceChildren();
 
-    // Saml alle vagter pr. medarbejder
     const byEmployee = new Map();
 
     schedules.forEach(schedule => {
-        schedule.assignments.forEach(assignment => {
-            if (!byEmployee.has(assignment.employeeId)) {
-                byEmployee.set(assignment.employeeId, {
-                    name: assignment.employeeName || "Medarbejder " + assignment.employeeId,
+        const assignments = schedule.assignments || [];
+
+        assignments.forEach(assignment => {
+            const employeeId = assignment.employeeId;
+
+            if (!byEmployee.has(employeeId)) {
+                byEmployee.set(employeeId, {
+                    name: assignment.employeeName ||
+                        "Medarbejder " + employeeId,
                     shifts: []
                 });
             }
-            byEmployee.get(assignment.employeeId).shifts.push({
+
+            byEmployee.get(employeeId).shifts.push({
                 date: schedule.date,
                 assignment: assignment
             });
@@ -364,16 +385,19 @@ function displaySchedule(schedules) {
     });
 
     if (byEmployee.size === 0) {
-        scheduleElement.textContent = "Ingen vagter i denne periode.";
+        scheduleElement.textContent =
+            "Ingen medarbejdere på vagt i denne periode.";
         return;
     }
 
     byEmployee.forEach(employee => {
-        const div = document.createElement("div");
+        const card = document.createElement("div");
+        card.classList.add("employee-shift");
 
-        const title = document.createElement("h3");
-        title.textContent = employee.name;
-        div.appendChild(title);
+        const name = document.createElement("h3");
+        name.textContent = employee.name;
+
+        card.appendChild(name);
 
         employee.shifts.forEach(({ date, assignment }) => {
             const activityName =
@@ -381,18 +405,26 @@ function displaySchedule(schedules) {
                 activityNames[assignment.activityId] ||
                 "Aktivitet " + assignment.activityId;
 
-            const hours = assignment.workStart
-                ? assignment.workStart.substring(11, 16) + " - " + assignment.workEnd.substring(11, 16)
-                : "tid ikke fastlagt";
+            const start = assignment.workStart
+                ? assignment.workStart.substring(11, 16)
+                : "Ukendt";
 
-            const line = document.createElement("p");
-            line.textContent = `${date} · ${activityName} · ${hours}`;
-            div.appendChild(line);
+            const end = assignment.workEnd
+                ? assignment.workEnd.substring(11, 16)
+                : "Ukendt";
+
+            const shift = document.createElement("p");
+
+            shift.textContent =
+                `${date} | ${activityName} | ${start} - ${end}`;
+
+            card.appendChild(shift);
         });
 
-        scheduleElement.appendChild(div);
+        scheduleElement.appendChild(card);
     });
 }
+
 
 
 
